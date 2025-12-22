@@ -1,43 +1,59 @@
 /*
-=============================================================
-ddl_bronze.sql postgreSQL
-=============================================================
+===============================================================================
+DDL Script: Create Bronze Tables
+===============================================================================
 Script Purpose:
-    Set up the Data Warehouse environment in PostgreSQL:
-      A) Create the project database: 'datawarehouse'
-      B) Create core schemas inside that database:
-           - bronze
-           - silver
-           - gold
-
-How to run (pgAdmin):
-    Step 1 (Database creation):
-        - Connect to a maintenance database (usually 'postgres')
-        - Run Section A
-
-    Step 2 (Schema initialization):
-        - Connect to the target database: 'DataWarehouse'
-        - Run Section B
-
-Notes:
-    - PostgreSQL does not support switching databases inside a plain SQL script
-      in pgAdmin.
-    - Section A does NOT drop the database. If it already exists, PostgreSQL
-      will return an error.
-    - Section B is safe to re-run (uses IF NOT EXISTS).
-=============================================================
+    This script creates tables in the 'bronze' schema, dropping existing tables 
+    if they already exist.
+	  Run this script to re-define the DDL structure of 'bronze' Tables
+===============================================================================
 */
+CREATE TABLE IF NOT EXISTS bronze.crm_cust_info (
+	cst_id 					INTEGER,
+	cst_key 				VARCHAR(50),
+	cst_firstname 			VARCHAR(50),
+	cst_lastname 			VARCHAR(50),
+	cst_material_status 	VARCHAR(50),
+	cst_gender 				VARCHAR(50),
+	cst_create_date 		DATE
+);
 
--- =============================================================
--- Section A: Create the database (run while connected to 'postgres')
--- =============================================================
+CREATE TABLE IF NOT EXISTS bronze.crm_prd_info (
+	prd_id 			INTEGER,
+	prd_key 		VARCHAR(50),
+	prd_nm 			VARCHAR(50),
+	prd_cost 		INTEGER,
+	prd_line 		VARCHAR(50),
+	prd_start_dt 	DATE,
+	prd_end_dt 		DATE
+);
 
-CREATE DATABASE DataWarehouse;
+CREATE TABLE IF NOT EXISTS bronze.crm_sales_details (
+	sls_ord_num 	VARCHAR(50),
+	sls_prd_key 	VARCHAR(50),
+	sls_cust_id 	INTEGER,
+	sls_order_dt 	INTEGER,
+	sls_ship_dt 	INTEGER,
+	sls_due_dt 		INTEGER,
+	sls_sales 		INTEGER,
+	sls_quantity 	INTEGER,
+	sls_price 		INTEGER
+);
 
--- =============================================================
--- Section B: Create schemas (run while connected to 'datawarehouse')
--- =============================================================
+CREATE TABLE IF NOT EXISTS bronze.erp_cust_az12 (
+	cid 	VARCHAR(50),
+	bdate 	DATE,
+	gen 	VARCHAR(50)
+);
 
-CREATE SCHEMA IF NOT EXISTS bronze;
-CREATE SCHEMA IF NOT EXISTS silver;
-CREATE SCHEMA IF NOT EXISTS gold;
+CREATE TABLE IF NOT EXISTS bronze.erp_loc_a101 (
+	cid 	VARCHAR(50),
+	cntry 	VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS bronze.erp_px_cat_g1v2 (
+	id 			VARCHAR(50),
+	cat 		VARCHAR(50),
+	subcat 		VARCHAR(50),
+	maintenance VARCHAR(50)
+);
