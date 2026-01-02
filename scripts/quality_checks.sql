@@ -77,9 +77,49 @@ FROM silver.crm_prd_info
 -- Check for Invalid Dates
 
 SELECT
-NULLIF(sls_order_dt, 0) AS sls_order_dt
+NULLIF(sls_ship_dt, 0) AS sls_ship_dt
 FROM bronze.crm_sales_details
-WHERE sls_order_dt <= 0 
-OR LENGTH(sls_order_dt::text) != 8 
-OR sls_order_dt > 20501231
-OR sls_order_dt < 19001231
+WHERE sls_ship_dt <= 0 
+OR LENGTH(sls_ship_dt::text) != 8 
+OR sls_ship_dt > 20501231
+OR sls_ship_dt < 19001231
+
+-- Check for Invalid Date Orders
+SELECT
+*
+FROM silver.crm_sales_details
+WHERE sls_order_dt > sls_ship_dt OR sls_order_dt > sls_due_dt
+/*
+-- Check Data Consistency between SALES , QUANTITY AND PRICE
+	SALES  = QUANTITY * PRICE
+	Values must be not NULL, ZERO OR NEGATIVE
+
+Business Rules (So my rules):
+	1. If Sales is negative, zero, or NULL, derive it using Quantity * Price.
+	2. If Price is zero or NULL, calculate it using Sales / Quantity.
+	3. If Price is negative, convert it to a positive value.
+*/
+
+SELECT DISTINCT 
+sls_sales AS old_sales,
+sls_quantity,
+sls_price AS old_price,
+
+CASE WHEN sls_sales <= 0 OR sls_sales IS NULL or sls_sales != sls_quantity * ABS(sls_price)
+		THEN sls_quantity * ABS(sls_price)
+	 ELSE sls_sales
+END AS sls_sales,
+
+CASE WHEN sls_price IS NULL OR sls_price <= 0 
+	 	THEN sls_sales / NULLIF(sls_quantity, 0)
+	 ELSE sls_price
+END AS sls_price
+FROM bronze.crm_sales_details
+WHERE sls_sales != sls_quantity * sls_price
+OR sls_sales IS NULL OR sls_quantity IS NULL OR sls_price IS NULL
+OR sls_sales <= 0 OR sls_quantity <= 0 OR sls_price <= 0
+ORDER BY sls_sales, sls_quantity, sls_price
+
+SELECT 
+*
+FROM silver.crm_sales_details
