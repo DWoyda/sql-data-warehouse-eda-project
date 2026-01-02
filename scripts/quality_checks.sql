@@ -1,5 +1,13 @@
 -- ======================================================================
--- QUALITY CHECKS
+/*
+--QUALITY CHECKS
+	crm_cust_info
+	crm_prd_info
+	crm_sales_details
+	erp_cust_az12
+	erp_loc_a101
+	erp_px_cat_g1v2
+*/
 -- ======================================================================
 -- ======================================================================
 -- crm_cust_info
@@ -120,6 +128,64 @@ OR sls_sales IS NULL OR sls_quantity IS NULL OR sls_price IS NULL
 OR sls_sales <= 0 OR sls_quantity <= 0 OR sls_price <= 0
 ORDER BY sls_sales, sls_quantity, sls_price
 
+-- ======================================================================
+-- erp_cust_az12
+-- ======================================================================
+-- Identify Out-of-range Dates
+
 SELECT 
+bdate
+FROM silver.erp_cust_az12
+WHERE bdate < '1926-01-01' OR bdate > CURRENT_DATE 
+
+-- Data Standardization & Consistency
+
+SELECT DISTINCT 
+gen,
+CASE 
+	WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female'
+	WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
+	ELSE 'unknown'
+END AS gen
+FROM silver.erp_cust_az12
+
+
+-- ======================================================================
+-- erp_loc_a101
+-- ======================================================================
+-- Changing key
+
+
+SELECT 
+REPLACE(cid, '-', '') AS cid,
+cntry
+FROM silver.erp_loc_a101
+
+
+-- Data Standardization & Consistency
+
+SELECT DISTINCT 
+CASE 
+	WHEN TRIM(cntry) = 'DE' THEN 'Germany'
+	WHEN TRIM(cntry) LIKE 'US%' THEN 'United States' 
+	WHEN TRIM(cntry) = '' OR cntry IS NULL THEN 'unknown'
+	ELSE TRIM(cntry)
+END AS cntry
+FROM silver.erp_loc_a101
+ORDER BY cntry
+
+-- ======================================================================
+-- erp_px_cat_g1v2
+-- ======================================================================
+-- Check unwanted spaces
+
+SELECT
 *
-FROM silver.crm_sales_details
+FROM bronze.erp_px_cat_g1v2
+WHERE cat != TRIM(cat) OR subcat != TRIM(subcat) OR maintenance != TRIM(maintenance)
+
+
+-- Data Standardization & Consistency
+
+SELECT DISTINCT maintenance
+FROM bronze.erp_px_cat_g1v2
