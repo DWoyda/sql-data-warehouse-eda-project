@@ -3,6 +3,7 @@
 -- bronze.crm_cust_info
 -- OUTPUT -> silver.crm_cust_info
 -- ===========================================
+TRUNCATE TABLE silver.crm_cust_info;;
 INSERT INTO silver.crm_cust_info (
 	cst_id, 
 	cst_key, 
@@ -36,4 +37,4 @@ FROM (
 	FROM bronze.crm_cust_info
 	WHERE cst_id IS NOT NULL
 ) AS t 
-WHERE flag_last = 1
+WHERE flag_last = 1;
