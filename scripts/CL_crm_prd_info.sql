@@ -3,6 +3,7 @@
 -- bronze.crm_prd_info
 -- OUTPUT -> silver.crm_prd_info
 -- ===========================================
+TRUNCATE TABLE silver.crm_prd_info;
 INSERT INTO silver.crm_prd_info (
 	prd_id, 
 	cat_id, 
@@ -28,7 +29,7 @@ CASE UPPER(TRIM(prd_line))
 END AS prd_line,
 prd_start_dt, 
 LEAD(prd_start_dt) OVER (PARTITION BY prd_key ORDER BY prd_start_dt)-1 AS prd_end_dt
-FROM bronze.crm_prd_info
+FROM bronze.crm_prd_info;
 
 /*
 -- ==========================================================
