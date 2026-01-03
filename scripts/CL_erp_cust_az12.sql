@@ -3,7 +3,7 @@
 -- bronze.erp_cust_az12
 -- OUTPUT -> silver.erp_cust_az12
 -- ===========================================
-
+TRUNCATE TABLE silver.erp_cust_az12;
 INSERT INTO silver.erp_cust_az12 (
 	cid, 
 	bdate, 
@@ -21,4 +21,4 @@ CASE
 	WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
 	ELSE 'unknown'
 END AS gen
-FROM bronze.erp_cust_az12
+FROM bronze.erp_cust_az12;
