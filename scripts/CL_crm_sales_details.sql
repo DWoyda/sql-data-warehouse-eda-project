@@ -3,6 +3,7 @@
 -- bronze.crm_sales_details
 -- OUTPUT -> silver.crm_sales_details
 -- ===========================================
+TRUNCATE TABLE silver.crm_sales_details;
 INSERT INTO silver.crm_sales_details (
 	sls_ord_num, 
 	sls_prd_key, 
@@ -39,4 +40,4 @@ CASE WHEN sls_price IS NULL OR sls_price <= 0
 	 	THEN sls_sales / NULLIF(sls_quantity, 0)
 	 ELSE sls_price
 END AS sls_price
-FROM bronze.crm_sales_details
+FROM bronze.crm_sales_details;
