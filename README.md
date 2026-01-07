@@ -47,6 +47,10 @@ This project follows a **Medallion / Layered** approach:
 
 Gold is the layer consumed by **Power BI** for reporting.
 
+<p align="center">
+  <img src="docs/data_architecture.png" width="1100">
+</p>
+
 ---
 
 ## Dataset and Model
