@@ -14,11 +14,28 @@ Project that demonstrates an end-to-end analytics workflow: building a small **S
 
 **Deliverables included in this repo:**
 - SQL scripts for a 3-layer warehouse (bronze → silver → gold)
+   - DBMS -> PostgreSQL
 - A star schema in the Gold layer (`fact_sales` + dimensions)
 - EDA SQL queries (basic + advanced)
 - Power BI report (`.pbix`) built on top of the Gold layer (imported)
 
 ---
+
+## Dashboard Preview
+
+<p align="center">
+  <img src="docs/dashboard-overview.png" width="1100">
+</p>
+
+**What’s included on the dashboard (1 page – Sales Overview):**
+- KPI cards: Total Sales, Nr. Customers, Nr. Orders, Total Quantity
+- Trend: Sales per year
+- Breakdown: Sales by category
+- Top 10 products by sales
+- Slicers: date range + country
+
+---
+
 
 ## High-Level Architecture
 
@@ -59,19 +76,12 @@ Gold is the layer consumed by **Power BI** for reporting.
 
 ### Date range
 - **2010-12-29 -> 2014-01-28**
- 
-<p align="center">
-  <img src="docs/data_architecture.png" width="900">
-</p>
 
 ---
 
 ## KPIs (report aggregations)
 
 KPI values are calculated directly in visuals using Power BI’s built-in summarization
-
-![Dashboard Overview](docs/dashboard-overview.png)
-
 
 ### Repository structure
 
