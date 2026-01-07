@@ -59,16 +59,23 @@ Gold is the layer consumed by **Power BI** for reporting.
 
 ### Date range
 - **2010-12-29 -> 2014-01-28**
+ 
+<p align="center">
+  <img src="docs/data_architecture.png" width="900">
+</p>
 
-![Data Architecture](docs/data_architecture.png)
 ---
 
 ## KPIs (report aggregations)
 
 KPI values are calculated directly in visuals using Power BI’s built-in summarization
-![Dashboard Overview](bi/dashboard_overview.png)
 
----
+![Dashboard Overview](docs/dashboard-overview.png)
+
+
+### Repository structure
+
+```text
 
 sql-data-warehouse-eda-project/
 ├─ bi/
@@ -96,3 +103,8 @@ sql-data-warehouse-eda-project/
 ├─ LICENSE
 └─ README.md
 
+```
+## License
+
+This project is licensed under the **MIT License**.  
+See [LICENSE](LICENSE) for details.
