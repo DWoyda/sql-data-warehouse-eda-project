@@ -35,11 +35,6 @@ This project answers the following questions:
 - Top 10 products by sales
 - Slicers: date range + country
 
-**Quick links**
-- [Open the Power BI report (.pbix)](bi/)
-- [EDA queries](eda/)
-- [Gold model scripts](scripts/gold/)
-
 ---
 
 ## Results (Key Findings)
